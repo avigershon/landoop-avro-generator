@@ -1,6 +1,6 @@
 # Landoop Avro Generator
 
-A synthetic data generator that creates the following Kafka topics: 
+A synthetic data generator that creates the following Kafka topics:
 
  + demo-simple
  + demo-simple100
