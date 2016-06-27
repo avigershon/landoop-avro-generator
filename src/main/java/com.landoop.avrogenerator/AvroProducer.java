@@ -125,7 +125,7 @@ class AvroProducer {
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");
 
-        producer.send(new ProducerRecord<Object, Object>(topic, "key", avroRecord));
+        producer.send(new ProducerRecord<Object, Object>(topic, 0, avroRecord));
 
         //byte[] recordInBytes = recordInjection.apply(avroRecord);
         //producer.send(new ProducerRecord<String, byte[]>(topic, recordInBytes));
