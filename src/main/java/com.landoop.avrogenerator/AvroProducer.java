@@ -39,7 +39,7 @@ class AvroProducer {
 
   private Producer<Object, Object> getAvroProducer(String brokers, String schemaregistry) {
 
-    log.info("Starting [AvroProducer] with brokers=[" + brokers + "] and schema-registry=[" + schemaregistry+"]");
+    log.info("Starting [AvroProducer] with brokers=[" + brokers + "] and schema-registry=[" + schemaregistry + "]");
     Properties producerProps = new Properties();
     producerProps.put("bootstrap.servers", brokers);
     producerProps.put("acks", "all");
