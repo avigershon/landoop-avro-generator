@@ -19,13 +19,13 @@ import org.apache.avro.Schema;
 
 public enum AllAvroMessages {
 
-  // My enumerations
-  SIMPLE(SIMPLE_SCHEMA()),
-  SIMPLE100(SIMPLE_SCHEMA()),
+  // Messages enumerations
+  TEXT50(TEXT()), // 50 char text
+  TEXT100(TEXT()), // 100 char text
   PERSON(PERSON_SCHEMA()),
   EVOLUTION(EVOLUTION_SCHEMA()),
   EVOLUTION_ADD_TEXT(EVOLUTION_SCHEMA_1_ADD_TEXT()),
-  SQL_INJECTION(SIMPLE_SCHEMA()),
+  SQL_INJECTION(TEXT()),
   RESERVED_SQL_WORDS(RESERVED_SQL_WORDS()),
   UPSERT_PERSON_1PC(PERSON_SCHEMA());
 
@@ -108,8 +108,8 @@ public enum AllAvroMessages {
   }
   */
 
-  public static Schema SIMPLE_SCHEMA() {
-    String schema = "{`type`:`record`,`name`:`com.landoop.simple`,`fields`:[{`name`:`text`,`type`:`string`}]}".replace('`', '"');
+  public static Schema TEXT() {
+    String schema = "{`type`:`record`,`name`:`com.landoop.text`,`doc`:`A set of 50 character records, followed by a set of 100 characters text`,`fields`:[{`name`:`text`,`type`:`string`}]}".replace('`', '"');
     Schema.Parser parser = new Schema.Parser();
     return parser.parse(schema);
   }

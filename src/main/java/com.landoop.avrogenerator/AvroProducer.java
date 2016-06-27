@@ -39,7 +39,7 @@ class AvroProducer {
 
   private Producer<Object, Object> getAvroProducer(String brokers, String schemaregistry) {
 
-    log.info("Starting [AvroProducer] with brokers= " + brokers + " and schema-registry= " + schemaregistry);
+    log.info("Starting [AvroProducer] with brokers=[" + brokers + "] and schema-registry=[" + schemaregistry+"]");
     Properties producerProps = new Properties();
     producerProps.put("bootstrap.servers", brokers);
     producerProps.put("acks", "all");
@@ -65,9 +65,9 @@ class AvroProducer {
         GenericRecord avroRecord = new GenericData.Record(message.getSchema());
 
         // Depends on the message we are constructing
-        if (message == AllAvroMessages.SIMPLE) {
+        if (message == AllAvroMessages.TEXT50) {
           avroRecord.put("text", randomString(30));
-        } else if (message == AllAvroMessages.SIMPLE100) {
+        } else if (message == AllAvroMessages.TEXT100) {
           avroRecord.put("text", randomString(100));
         } else if (message == AllAvroMessages.PERSON) {
           avroRecord.put("name", randomString(50));
