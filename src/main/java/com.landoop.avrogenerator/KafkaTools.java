@@ -16,6 +16,7 @@
 package com.landoop.avrogenerator;
 
 import kafka.admin.AdminUtils;
+import kafka.utils.ZKStringSerializer$;
 import kafka.utils.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
@@ -35,9 +36,15 @@ class KafkaTools {
     int connectionTimeOutInMs = 3 * 1000;
     try {
       log.info("Creating topic [ " + topicName + " ] with " + noOfPartitions + " partitions and " + noOfReplication + " replication");
-      log.info("Using zookeeper = " + zookeepers);
-      zkClient = new ZkClient(zookeepers, sessionTimeOutInMs, connectionTimeOutInMs);
-      ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeepers), false);
+      log.info("Using zookeeper [ " + zookeepers + " ]");
+      // Note: You must initialize the ZkClient with ZKStringSerializer.  If you don't, then
+      // createTopic() will only seem to work (it will return without error).  The topic will exist in
+      // only ZooKeeper and will be returned when listing topics, but Kafka itself does not create the
+      // topic.
+      zkClient = new ZkClient(zookeepers, sessionTimeOutInMs, connectionTimeOutInMs, ZKStringSerializer$.MODULE$);
+      // Security for Kafka was added in Kafka 0.9.0.0
+      boolean isSecureKafkaCluster = false;
+      ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeepers), isSecureKafkaCluster);
       Properties topicConfiguration = new Properties();
       AdminUtils.createTopic(zkUtils, topicName, noOfPartitions, noOfReplication, topicConfiguration);
     } catch (Exception ex) {
