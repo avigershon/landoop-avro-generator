@@ -39,12 +39,12 @@ class AvroProducer {
 
   private Producer<Object, Object> getAvroProducer(String brokers, String schemaregistry) {
 
-    log.info("Starting [AvroProducer] with brokers=" + brokers + " and schema-registry=" + schemaregistry);
+    log.info("Starting [AvroProducer] with brokers= " + brokers + " and schema-registry= " + schemaregistry);
     Properties producerProps = new Properties();
     producerProps.put("bootstrap.servers", brokers);
     producerProps.put("acks", "all");
-    producerProps.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
-    // producerProps.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+    producerProps.put("key.serializer", io.confluent.kafka.serializers.KafkaAvroSerializer.class);
+    producerProps.put("value.serializer", io.confluent.kafka.serializers.KafkaAvroSerializer.class);
     producerProps.put("schema.registry.url", schemaregistry);
 
     return new KafkaProducer<>(producerProps);

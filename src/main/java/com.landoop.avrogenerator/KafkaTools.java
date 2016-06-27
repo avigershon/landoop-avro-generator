@@ -34,7 +34,7 @@ class KafkaTools {
     int sessionTimeOutInMs = 3 * 1000;
     int connectionTimeOutInMs = 3 * 1000;
     try {
-      log.info("Creating topic [" + topicName + "] with " + noOfPartitions + " partitions and " + noOfReplication);
+      log.info("Creating topic [ " + topicName + " ] with " + noOfPartitions + " partitions and " + noOfReplication + " replication");
       log.info("Using zookeeper = " + zookeepers);
       zkClient = new ZkClient(zookeepers, sessionTimeOutInMs, connectionTimeOutInMs);
       ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeepers), false);
