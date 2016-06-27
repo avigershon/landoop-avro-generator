@@ -17,7 +17,7 @@ package com.landoop.avrogenerator;
 
 import org.apache.avro.Schema;
 
-enum AllAvroMessages {
+public enum AllAvroMessages {
 
   // My enumerations
   SIMPLE(SIMPLE_SCHEMA()),

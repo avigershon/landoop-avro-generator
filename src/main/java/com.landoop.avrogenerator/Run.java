@@ -30,8 +30,8 @@ public class Run {
     this.messages = messages;
     this.partitions = partitions;
 
-    runScenario(brokers, zookeepers, schemaregistry, "demo-simple", AllAvroMessages.SIMPLE);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-simple100", AllAvroMessages.SIMPLE100);
+//    runScenario(brokers, zookeepers, schemaregistry, "demo-simple", AllAvroMessages.SIMPLE);
+//    runScenario(brokers, zookeepers, schemaregistry, "demo-simple100", AllAvroMessages.SIMPLE100);
     runScenario(brokers, zookeepers, schemaregistry, "demo-person", AllAvroMessages.PERSON);
     runScenario(brokers, zookeepers, schemaregistry, "demo-person-1pc", AllAvroMessages.UPSERT_PERSON_1PC);
     runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", AllAvroMessages.EVOLUTION);
