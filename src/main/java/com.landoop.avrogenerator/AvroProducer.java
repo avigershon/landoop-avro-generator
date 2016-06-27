@@ -43,8 +43,8 @@ class AvroProducer {
     Properties producerProps = new Properties();
     producerProps.put("bootstrap.servers", brokers);
     producerProps.put("acks", "all");
-    producerProps.put("key.serializer", io.confluent.kafka.serializers.KafkaAvroSerializer.class);
-    producerProps.put("value.serializer", io.confluent.kafka.serializers.KafkaAvroSerializer.class);
+    producerProps.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+    producerProps.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
     producerProps.put("schema.registry.url", schemaregistry);
 
     return new KafkaProducer<>(producerProps);
