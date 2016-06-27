@@ -26,7 +26,7 @@
 
     <!-- header -->
     <module name="RegexpHeader">
-        <property name="header" value="/\*\*\nCopyright .* Landoop."/>
+        <property name="header" value="/\*\nCopyright .* Landoop."/>
     </module>
 
     <module name="TreeWalker">

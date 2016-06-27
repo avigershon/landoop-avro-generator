@@ -18,9 +18,9 @@ A synthetic data generator that creates the following Kafka topics:
 
 Export 3 system variables 
 
-     export BROKERS="cloudera.landoop.com:29092"
-     export ZK="cloudera.landoop.com:22181"
-     export SCHEMAREGISTRY="http://cloudera.landoop.com:28081"
+     export BROKERS="broker.landoop.com:29092"
+     export ZK="zookeeper.landoop.com:22181"
+     export SCHEMA_REGISTRY="http://schema_registry.landoop.com:28081"
 
 And then execute - by passing in <number of messages> and <partitions>
 
@@ -38,3 +38,10 @@ And then execute - by passing in <number of messages> and <partitions>
     kafka-topics --delete --zookeeper $ZK --topic demo-reserved
     sleep 2
     kafka-topics --zookeeper $ZK --list | grep "demo-"
+
+Delete the _schemas topic
+
+    kafka-topics --delete --zookeeper $ZK --topic _schemas
+    kafka-run-class kafka.tools.ZooKeeperMainWrapper -server $ZK delete /schema_registry/schema_id_counter
+
+    kafka-avro-console-consumer --zookeeper $ZK --topic _schemas --from-beginning
