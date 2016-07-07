@@ -8,14 +8,16 @@
 
 The topics generated and populated with messages are:
 
-Topic  | Messages
-------------- | -------------
-generator-text        | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
-generator-types  | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
-generator-types-upsert   | Same as above, but 1% of the messages contain the **same** value in field `text`. This is used to test connectors that support the `UPSERT` mode
-generator-sql        |  Contains reserved `SQL` words as fields and also in contents
-generator-evolution-widen     | Testing `Avro Evolution` type widenning ²
-generator-evolution-add       | Testing `Avro Evolution` adding new fields with default value ³
+Kafka Topic               | Avro message/s
+------------------------- | ------------------------------------------------------------------------------
+generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
+generator-types           | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
+generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`. This is used to test connectors that support the `UPSERT` mode
+generator-sql             | Contains reserved `SQL` words as fields and also in contents
+generator-evolution-widen | Testing `Avro Evolution` type widenning ²
+generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ³
+generator-shipments       | Item shipments to stores for e-commerce use-case
+generator-sales           | Item sales for e-commerce use-case
 
 ¹ (2 sets) First set 50 chars - second set 100 chars
 

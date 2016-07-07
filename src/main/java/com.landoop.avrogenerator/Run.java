@@ -47,6 +47,10 @@ public class Run {
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD1);
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
+
+    // Avro - Ecommerce scenario
+    runScenario(brokers, zookeepers, schemaregistry, "generator-shipments", Generator.ECOMMERCE_SHIPMENTS);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-sales", Generator.ECOMMERCE_SALES);
   }
 
   public static void main(String[] args) throws IOException {
@@ -71,7 +75,9 @@ public class Run {
             "generator-types-upsert " +
             "generator-sql " +
             "generator-evolution-widen " +
-            "generator-evolution-add ]");
+            "generator-evolution-add " +
+            "generator-shipments " +
+            "generator-sales]");
 
     new Run(messages, partitions, brokers, zookeepers, schemaregistry);
   }
