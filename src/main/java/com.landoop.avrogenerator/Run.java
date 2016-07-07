@@ -31,13 +31,22 @@ public class Run {
     this.messages = messages;
     this.partitions = partitions;
 
+    // Avro - Basics
     runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT50);
     runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT100);
     runScenario(brokers, zookeepers, schemaregistry, "generator-avro-types", Generator.AVRO_TYPES);
     runScenario(brokers, zookeepers, schemaregistry, "generator-avro-types-upsert", Generator.AVRO_TYPES_UPSERT);
     runScenario(brokers, zookeepers, schemaregistry, "generator-sql-reserved", Generator.SQL_RESERVED_WORDS);
-//    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", BasicAvro.EVOLUTION);
-//    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", BasicAvro.EVOLUTION_ADD_TEXT);
+
+    // Avro - Evolution adding new fields
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_INITIAL);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD1);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
+
+    // Avro - Evolution widening types
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_INITIAL);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_TOLONG);
   }
 
   public static void main(String[] args) throws IOException {

@@ -28,24 +28,24 @@ class AvroEvolutionAdd {
           "`doc`:`Initial record contains a single string field 'text'`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:[`boolean`,`null`],`default`:`true`}" + // New boolean field
+          "{`name`:`flag`,`type`:`boolean`,`default`:true}" + // New boolean field
           "]}";
 
   static String EVOLUTION_ADD2_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`," +
           "`doc`:`A set of 50 character records, followed by a set of 100 characters text`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:[`boolean`,`null`],`default`:`true`}" +
-          "{`name`:`number1`,`type`:[`int`],`null`],`default`:`0`}," + // New integer field
+          "{`name`:`flag`,`type`:`boolean`,`default`:true}" +
+          "{`name`:`number1`,`type`:`int`,`default`:0}," + // New integer field
           "]}";
 
   static String EVOLUTION_ADD3_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`," +
           "`doc`:`A set of 50 character records, followed by a set of 100 characters text`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:[`boolean`,`null`],`default`:`true`}" +
-          "{`name`:`number1`,`type`:[`int`],`null`],`default`:`0`}," +
-          "{`name`:`number1`,`type`:[`float`],`null`],`default`:`0`}," + // New float field
+          "{`name`:`flag`,`type`:`boolean`,`default`:`true`}" +
+          "{`name`:`number1`,`type`:`int`,`default`:0}," +
+          "{`name`:`number1`,`type`:`float`,`default`:0}," + // New float field
           "]}";
 
 }
