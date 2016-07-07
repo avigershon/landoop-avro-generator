@@ -15,6 +15,7 @@
  */
 package com.landoop.avrogenerator;
 
+import com.landoop.avrogenerator.messages.Generator;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -31,14 +32,21 @@ class AvroProducer {
 
   private static final Logger log = LoggerFactory.getLogger(AvroProducer.class);
   private String brokers, schemaregistry;
+  private Random random = new Random();
 
+  /**
+   * @param brokers        i.e. hostname:9092
+   * @param schemaregistry i.e. http://schema_registry-hostname:8081
+   */
   AvroProducer(String brokers, String schemaregistry) {
     this.brokers = brokers;
     this.schemaregistry = schemaregistry;
   }
 
+  /**
+   * Bootstrap a Kafka Producer using Avro for value & key serializer
+   */
   private Producer<Object, Object> getAvroProducer(String brokers, String schemaregistry) {
-
     log.info("Starting [AvroProducer] with brokers=[" + brokers + "] and schema-registry=[" + schemaregistry + "]");
     Properties producerProps = new Properties();
     producerProps.put("bootstrap.servers", brokers);
@@ -46,17 +54,13 @@ class AvroProducer {
     producerProps.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
     producerProps.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
     producerProps.put("schema.registry.url", schemaregistry);
-
     return new KafkaProducer<>(producerProps);
   }
 
-  void sendMessages(int num, String topic, AllAvroMessages message) {
-    // Injection<GenericRecord, byte[]> recordInjection = GenericAvroCodecs.toBinary(message.getSchema());
-    // byte[] bytes = (new byte[]{-32, 124});
-
-    Random random = new Random();
-    int max = 100;
-    int min = 1;
+  /**
+   * Sends X number of messages to a topic - with a particular message format
+   */
+  void sendMessages(int num, String topic, Generator message) {
 
     try (Producer<Object, Object> producer = getAvroProducer(brokers, schemaregistry)) {
       log.info("Sending " + num / 1000 + "K messages to topic [" + topic + "]");
@@ -64,53 +68,50 @@ class AvroProducer {
       for (int i = 0; i < num; i++) {
         GenericRecord avroRecord = new GenericData.Record(message.getSchema());
 
-        // Depends on the message we are constructing
-        if (message == AllAvroMessages.TEXT50) {
-          avroRecord.put("text", randomString(30));
-        } else if (message == AllAvroMessages.TEXT100) {
+        // Match on message type
+        if (message == Generator.TEXT50) {
+          avroRecord.put("text", randomString(50));
+        } else if (message == Generator.TEXT100) {
           avroRecord.put("text", randomString(100));
-        } else if (message == AllAvroMessages.PERSON) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("adult", true);
+        } else if (message == Generator.AVRO_TYPES) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", false);
           avroRecord.put("integer8", 8);
           avroRecord.put("integer16", 16);
           avroRecord.put("integer32", 32L);
           avroRecord.put("integer64", 64L);
           avroRecord.put("float32", (float) 21.32);
           avroRecord.put("float64", 21122.321221212121); // double
-          // avroRecord.put("mybytes", "assaas");
-        } else if (message == AllAvroMessages.UPSERT_PERSON_1PC) {
-          int ranNumber = random.nextInt(max - min + 1) + min;
+        } else if (message == Generator.AVRO_TYPES_UPSERT) {
+          int ranNumber = random.nextInt(100);
           if (ranNumber == 50) {
-            avroRecord.put("name", "SAME");
-            avroRecord.put("adult", false);
+            avroRecord.put("text", "PRIMARY-KEY-" + random.nextInt(10));
           } else {
-            avroRecord.put("name", randomString(50));
-            avroRecord.put("adult", true);
+            avroRecord.put("text", randomString(50));
           }
+          avroRecord.put("flag", true);
           avroRecord.put("integer8", 8);
           avroRecord.put("integer16", 16);
           avroRecord.put("integer32", 32L);
           avroRecord.put("integer64", 64L);
-          avroRecord.put("float32", (float) 21.32);
-          avroRecord.put("float64", 21122.321221212121); // double
-        } else if (message == AllAvroMessages.EVOLUTION) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
-          avroRecord.put("number2", (float) 1000.0);
-        } else if (message == AllAvroMessages.EVOLUTION_ADD_TEXT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
-          avroRecord.put("number2", (float) 1000.0);
-          avroRecord.put("text", "payload");
-        } else if (message == AllAvroMessages.SQL_INJECTION) {
-          avroRecord.put("text", "sql injection");
-        } else if (message == AllAvroMessages.RESERVED_SQL_WORDS) {
-          avroRecord.put("as", "sql injection");
+          avroRecord.put("float32", (float) 10.01);
+          avroRecord.put("float64", 10000.001); // double
+        } else if (message == Generator.SQL_RESERVED_WORDS) {
+          String[] reservedList = {"SELECT * FROM TABLE1", "CREATE AS SELECT FROM", "DROP TABLE TABLE1"};
+          avroRecord.put("as", reservedList[random.nextInt(reservedList.length)]);
           avroRecord.put("from", 10);
         }
         /*
-        else if (message == AllAvroMessages.EVOLUTION_WIDEN_FLOAT) {
+        else if (message == BasicAvro.EVOLUTION) {
+          avroRecord.put("name", randomString(50));
+          avroRecord.put("number1", 1000);
+          avroRecord.put("number2", (float) 1000.0);
+        } else if (message == BasicAvro.EVOLUTION_ADD_TEXT) {
+          avroRecord.put("name", randomString(50));
+          avroRecord.put("number1", 1000);
+          avroRecord.put("number2", (float) 1000.0);
+          avroRecord.put("text", "payload");
+        } else if (message == AllAvroMessages.EVOLUTION_WIDEN_FLOAT) {
           avroRecord.put("name", randomString(50));
           avroRecord.put("number1", 100000000000L);
           avroRecord.put("number2", 100000000000.000000000001D);
@@ -120,7 +121,7 @@ class AvroProducer {
           avroRecord.put("number2", 100000000000.000000000001D);
           avroRecord.put("text", "payload");
         }
-         */
+        */
 
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");

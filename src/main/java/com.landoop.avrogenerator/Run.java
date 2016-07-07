@@ -15,6 +15,7 @@
  */
 package com.landoop.avrogenerator;
 
+import com.landoop.avrogenerator.messages.Generator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,14 +31,13 @@ public class Run {
     this.messages = messages;
     this.partitions = partitions;
 
-//    runScenario(brokers, zookeepers, schemaregistry, "demo-text", AllAvroMessages.TEXT50);
-//    runScenario(brokers, zookeepers, schemaregistry, "demo-text", AllAvroMessages.TEXT100);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-person", AllAvroMessages.PERSON);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-person-1pc", AllAvroMessages.UPSERT_PERSON_1PC);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", AllAvroMessages.EVOLUTION);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", AllAvroMessages.EVOLUTION_ADD_TEXT);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-sql-inject", AllAvroMessages.SQL_INJECTION);
-    runScenario(brokers, zookeepers, schemaregistry, "demo-reserved", AllAvroMessages.RESERVED_SQL_WORDS);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT50);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT100);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-avro-types", Generator.AVRO_TYPES);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-avro-types-upsert", Generator.AVRO_TYPES_UPSERT);
+    runScenario(brokers, zookeepers, schemaregistry, "generator-sql-reserved", Generator.SQL_RESERVED_WORDS);
+//    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", BasicAvro.EVOLUTION);
+//    runScenario(brokers, zookeepers, schemaregistry, "demo-evolution", BasicAvro.EVOLUTION_ADD_TEXT);
   }
 
   public static void main(String[] args) throws IOException {
@@ -61,7 +61,7 @@ public class Run {
     new Run(messages, partitions, brokers, zookeepers, schemaregistry);
   }
 
-  private void runScenario(String brokers, String zookeepers, String schemaregistry, String topicName, AllAvroMessages avromessageType) {
+  private void runScenario(String brokers, String zookeepers, String schemaregistry, String topicName, Generator avromessageType) {
     AvroProducer avroGenerator = new AvroProducer(brokers, schemaregistry);
     KafkaTools.createTopic(zookeepers, topicName, partitions, 1);
     avroGenerator.sendMessages(messages, topicName, avromessageType);
