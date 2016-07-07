@@ -17,13 +17,17 @@ package com.landoop.avrogenerator.messages;
 
 public class AvroEvolutionWiden {
 
-  static String EVOLUTION_WIDEN_INITIAL_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`,`fields`:[" +
+  static String EVOLUTION_WIDEN_INITIAL_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionWiden_v1`," +
+          "`doc`:`Initial record contains a string, a long and a float`," +
+          "`fields`:[" +
           "{`name`:`name`,`type`:`string`}," +
           "{`name`:`number1`,`type`:`long`}," +
           "{`name`:`number2`,`type`:`float`}" + // -> to double
           "]}";
 
-  static String EVOLUTION_WIDEN_TOLONG_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`,`fields`:[" +
+  static String EVOLUTION_WIDEN_TOLONG_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionWiden_v2`," +
+          "`doc`:`Evolution for 'number2' Type was widened : float -> double`," +
+          "`fields`:[" +
           "{`name`:`name`,`type`:`string`}," +
           "{`name`:`number1`,`type`:`long`}," +
           "{`name`:`number2`,`type`:`double`}" +

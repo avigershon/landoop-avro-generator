@@ -55,6 +55,7 @@ public enum Generator {
 
   public static Schema getSchema(String schemaString) {
     Schema.Parser parser = new Schema.Parser();
+    //System.out.println("Parsing " + schemaString);
     return parser.parse(schemaString.replace('`', '"'));
   }
 
