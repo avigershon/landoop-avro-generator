@@ -47,6 +47,9 @@ public class Run {
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD1);
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
+
+    // Avro - E-commerce scenario
+    runEcommerce(brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES);
   }
 
   public static void main(String[] args) throws IOException {
@@ -65,15 +68,32 @@ public class Run {
               " export BROKERS='broker.landoop.com:29092'\n export ZK='zookeeper.landoop.com:22181'\n export SCHEMA_REGISTRY='http://schema_registry.landoop.com:28081'\n".replace("'", "\""));
 
     log.info("Running <landoop-avro-generator> generating " + messages + " messages on " + partitions + " partitions");
-    log.info("The following topics will be generated : demo-simple , demo-simple100, demo-person, demo-person-1pc, demo-evolution, demo-sql-inject, demo-reserved");
+    log.info("The following topics will be generated [" +
+            "generator-text " +
+            "generator-types " +
+            "generator-types-upsert " +
+            "generator-sql " +
+            "generator-evolution-widen " +
+            "generator-evolution-add " +
+            "generator-shipments " +
+            "generator-sales]");
 
     new Run(messages, partitions, brokers, zookeepers, schemaregistry);
   }
 
   private void runScenario(String brokers, String zookeepers, String schemaregistry, String topicName, Generator avromessageType) {
+    log.info("Running scenario for topic : " + topicName);
     AvroProducer avroGenerator = new AvroProducer(brokers, schemaregistry);
     KafkaTools.createTopic(zookeepers, topicName, partitions, 1);
     avroGenerator.sendMessages(messages, topicName, avromessageType);
+  }
+
+  private void runEcommerce(String brokers, String zookeepers, String schemaregistry, String topicShipments, String topicSales,
+                            Generator shipmentMessage, Generator salesMessage) {
+    AvroProducer avroGenerator = new AvroProducer(brokers, schemaregistry);
+    KafkaTools.createTopic(zookeepers, topicShipments, partitions, 1);
+    KafkaTools.createTopic(zookeepers, topicSales, partitions, 1);
+    avroGenerator.sendEcommerceMessages(messages, topicShipments, topicSales, shipmentMessage, salesMessage);
   }
 
 }

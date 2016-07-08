@@ -18,34 +18,34 @@ package com.landoop.avrogenerator.messages;
 // Schema Evolution `Adding new fields`
 class AvroEvolutionAdd {
 
-  static String EVOLUTION_INITIAL_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionAdd`," +
+  static String EVOLUTION_INITIAL_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution_v1`," +
           "`doc`:`Initial record contains a single string field 'text'`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}" +
           "]}";
 
-  static String EVOLUTION_ADD1_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`," +
-          "`doc`:`Initial record contains a single string field 'text'`," +
+  static String EVOLUTION_ADD1_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionAdd_v2`," +
+          "`doc`:`Evolution - record contains a new BOOLEAN field`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:`boolean`,`default`:true}" + // New boolean field
+          "{`name`:`flag`,`type`:`boolean`,`default`:true,`doc`:`introduced in v2`}" + // New boolean field
           "]}";
 
-  static String EVOLUTION_ADD2_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`," +
-          "`doc`:`A set of 50 character records, followed by a set of 100 characters text`," +
+  static String EVOLUTION_ADD2_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionAdd_v3`," +
+          "`doc`:`Evolution - record contains a new INT field`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:`boolean`,`default`:true}" +
-          "{`name`:`number1`,`type`:`int`,`default`:0}," + // New integer field
+          "{`name`:`flag`,`type`:`boolean`,`default`:true,`doc`:`introduced in v2`}," +
+          "{`name`:`number1`,`type`:`int`,`default`:0,`doc`:`introduced in v3`}" + // New integer field
           "]}";
 
-  static String EVOLUTION_ADD3_SCHEMA = "{`type`:`record`,`name`:`com.landoop.Evolution`," +
-          "`doc`:`A set of 50 character records, followed by a set of 100 characters text`," +
+  static String EVOLUTION_ADD3_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionAdd_v4`," +
+          "`doc`:`Evolution - record contains a new FLOAT field`," +
           "`fields`:[" +
           "{`name`:`text`,`type`:`string`}," +
-          "{`name`:`flag`,`type`:`boolean`,`default`:`true`}" +
+          "{`name`:`flag`,`type`:`boolean`,`default`:true}," +
           "{`name`:`number1`,`type`:`int`,`default`:0}," +
-          "{`name`:`number1`,`type`:`float`,`default`:0}," + // New float field
+          "{`name`:`number2`,`type`:`float`,`default`:0}" + // New float field
           "]}";
 
 }

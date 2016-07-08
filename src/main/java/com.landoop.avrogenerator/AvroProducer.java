@@ -15,6 +15,7 @@
  */
 package com.landoop.avrogenerator;
 
+import com.landoop.avrogenerator.messages.AvroEcommerce;
 import com.landoop.avrogenerator.messages.Generator;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -25,8 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 class AvroProducer {
 
@@ -58,8 +58,100 @@ class AvroProducer {
   }
 
   /**
+   * Sends X number of messages to 2 topic (shipments and sales) to simulate real-time streaming inventory app
+   * <p>
+   * It uses 715 stores x 100 products - and keeps an internalInventory for the shake of generating realistic data
+   */
+  void sendEcommerceMessages(int num, String topicShipments, String topicSales, Generator shipmentMessage, Generator salesMessage) {
+
+    int totalItems = 100; // 715 * 100
+    Map<String, Integer> internalInventory = new HashMap<>(); // key: storeCode-itemID value: count
+
+    try (Producer<Object, Object> producer = getAvroProducer(brokers, schemaregistry)) {
+      log.info("Sending " + num / 1000 + "K messages to topic [" + topicShipments + "] and [" + topicSales + "]");
+      long startTime = System.nanoTime();
+      for (int i = 0; i < num; i++) {
+
+        // Figure out a product and store
+        int itemID = random.nextInt(totalItems);
+        String store = AvroEcommerce.storeCodes[AvroEcommerce.storeCodes.length];
+
+        // Get current inventory status
+        int realInventory = 0;
+        if (internalInventory.containsKey(store + "-" + itemID)) {
+          realInventory = internalInventory.get(store + "-" + itemID);
+        }
+
+        // Figure out how many to ship
+        int shippedItems = 0;
+        if (realInventory <= 10) {
+          shippedItems = 100;
+        } else {
+          shippedItems = (random.nextInt(9) + 1) * 10; // 10..100
+        }
+
+        realInventory = realInventory + shippedItems;
+
+        // Create a shipment
+        GenericRecord shipmentRecord = new GenericData.Record(shipmentMessage.getSchema());
+        shipmentRecord.put("itemID", itemID);
+        shipmentRecord.put("storeCode", store);
+        shipmentRecord.put("count", 100L);
+        producer.send(new ProducerRecord<Object, Object>(topicShipments, 0, shipmentRecord));
+
+        // Update internal inventory
+        internalInventory.put(store + "-" + itemID, realInventory);
+
+        // For every shipment generate 5 sales
+        for (int s = 0; s < 5; s++) {
+          // Figure out how many to sell
+          int currentInventory = internalInventory.get(store + "-" + itemID);
+
+          int numberSales = 0;
+          if (currentInventory == 0) {
+            // Do not make a sale
+          } else if (currentInventory >= 4 && currentInventory <= 10) {
+            numberSales = 1;
+          } else {
+            numberSales = random.nextInt(10) * currentInventory;
+          }
+
+          realInventory = realInventory - numberSales;
+
+          if (numberSales > 0) {
+            // Create a sales
+            GenericRecord salesRecord = new GenericData.Record(shipmentMessage.getSchema());
+            salesRecord.put("itemID", itemID);
+            salesRecord.put("storeCode", store);
+            salesRecord.put("count", numberSales);
+            producer.send(new ProducerRecord<Object, Object>(topicSales, 0, salesRecord));
+
+            // Update internal inventory
+            internalInventory.put(store + "-" + itemID, realInventory);
+          }
+        }
+
+        // Log out every 10K messages
+        if (i % 10000 == 0)
+          System.out.print(" . " + (i / 1000) + "K");
+
+      }
+      System.out.println();
+      long endTime = System.nanoTime();
+      long durationMsec = (endTime - startTime) / 1000000;
+      log.info("Total time " + (durationMsec / 1000.0) + " sec ");
+      log.info("Shipment message rate : " + (int) (num / (durationMsec / 1000.0)) + " msg / sec");
+      log.info("Shipment message rate : " + (int) (num * 5 / (durationMsec / 1000.0)) + " msg / sec");
+    } catch (Throwable throwable) {
+      throwable.printStackTrace();
+    }
+
+  }
+
+  /**
    * Sends X number of messages to a topic - with a particular message format
    */
+
   void sendMessages(int num, String topic, Generator message) {
 
     try (Producer<Object, Object> producer = getAvroProducer(brokers, schemaregistry)) {
@@ -100,36 +192,34 @@ class AvroProducer {
           String[] reservedList = {"SELECT * FROM TABLE1", "CREATE AS SELECT FROM", "DROP TABLE TABLE1"};
           avroRecord.put("as", reservedList[random.nextInt(reservedList.length)]);
           avroRecord.put("from", 10);
-        }
-        /*
-        else if (message == BasicAvro.EVOLUTION) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
+        } else if (message == Generator.EVOLUTION_WIDEN_INITIAL) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("number1", 1000L);
           avroRecord.put("number2", (float) 1000.0);
-        } else if (message == BasicAvro.EVOLUTION_ADD_TEXT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
-          avroRecord.put("number2", (float) 1000.0);
-          avroRecord.put("text", "payload");
-        } else if (message == AllAvroMessages.EVOLUTION_WIDEN_FLOAT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 100000000000L);
+        } else if (message == Generator.EVOLUTION_WIDEN_TOLONG) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("number1", 1000L);
           avroRecord.put("number2", 100000000000.000000000001D);
-        } else if (message == AllAvroMessages.EVOLUTION_ADD_TEXT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 100000000000L);
-          avroRecord.put("number2", 100000000000.000000000001D);
-          avroRecord.put("text", "payload");
+        } else if (message == Generator.EVOLUTION_INITIAL) {
+          avroRecord.put("text", randomString(50));
+        } else if (message == Generator.EVOLUTION_ADD1) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+        } else if (message == Generator.EVOLUTION_ADD2) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+          avroRecord.put("number1", 100);
+        } else if (message == Generator.EVOLUTION_ADD3) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+          avroRecord.put("number1", 100);
+          avroRecord.put("number2", (float) 100.001);
         }
-        */
 
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");
 
         producer.send(new ProducerRecord<Object, Object>(topic, 0, avroRecord));
-
-        //byte[] recordInBytes = recordInjection.apply(avroRecord);
-        //producer.send(new ProducerRecord<String, byte[]>(topic, recordInBytes));
       }
       System.out.println();
       long endTime = System.nanoTime();

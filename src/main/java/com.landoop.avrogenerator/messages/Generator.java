@@ -44,7 +44,13 @@ public enum Generator {
    **      Avro Evolution : Widening existing fields                        **
    ***************************************************************************/
   EVOLUTION_WIDEN_INITIAL(getSchema(AvroEvolutionWiden.EVOLUTION_WIDEN_INITIAL_SCHEMA)),
-  EVOLUTION_WIDEN_TOLONG(getSchema(AvroEvolutionWiden.EVOLUTION_WIDEN_TOLONG_SCHEMA));
+  EVOLUTION_WIDEN_TOLONG(getSchema(AvroEvolutionWiden.EVOLUTION_WIDEN_TOLONG_SCHEMA)),
+
+  /***************************************************************************
+   **      Ecommerce Avro : Example for 'inventory-in-hand' scenario        **
+   ***************************************************************************/
+  ECOMMERCE_SHIPMENTS(getSchema(AvroEcommerce.SHIPMENT_SCHEMA)),
+  ECOMMERCE_SALES(getSchema(AvroEcommerce.SALES_SCHEMA2));
 
 
   private final Schema schema;
@@ -55,6 +61,7 @@ public enum Generator {
 
   public static Schema getSchema(String schemaString) {
     Schema.Parser parser = new Schema.Parser();
+    //System.out.println("Parsing " + schemaString);
     return parser.parse(schemaString.replace('`', '"'));
   }
 
