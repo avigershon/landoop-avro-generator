@@ -1,6 +1,5 @@
-[![Build Status](https://jenkins.landoop.com/buildStatus/icon?job=Avro-Generator&.png)](https://jenkins.landoop.com/job/Avro-Generator)
-
 # Landoop Avro Generator
+[![Build Status](https://jenkins.landoop.com/buildStatus/icon?job=Avro-Generator&.png)](https://jenkins.landoop.com/job/Avro-Generator)
 
 > Synthetic avro message generator
 
