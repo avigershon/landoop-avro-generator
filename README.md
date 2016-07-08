@@ -1,14 +1,16 @@
 # Landoop Avro Generator
+[![Build Status](https://jenkins.landoop.com/buildStatus/icon?job=Avro-Generator&.png)](https://jenkins.landoop.com/job/Avro-Generator)
 
 > Synthetic avro message generator
 
-* Creates new topic with particular number of `partitions` and `replication`
-* Registers Avro schema into the `schema-registry`
+* Creates new Kafka topics with particular number of `partitions` and `replication`
+* Registers Avro schemas into the `schema-registry`
 * Generates sets of i.e. 1 Million Avro messages of particular specifications
 
-The topics generated and populated with messages are:
+The following topics are populated
 
-Kafka Topic               | Avro message/s
+<<<<<<< HEAD
+Kafka Topic               | Avro messages
 ------------------------- | ------------------------------------------------------------------------------
 generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
 generator-types           | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
