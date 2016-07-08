@@ -74,7 +74,8 @@ class AvroProducer {
 
         // Figure out a product and store
         int itemID = random.nextInt(totalItems);
-        String store = AvroEcommerce.storeCodes[AvroEcommerce.storeCodes.length];
+        int tradomStoreID = random.nextInt(AvroEcommerce.storeCodes.length - 1);
+        String store = AvroEcommerce.storeCodes[tradomStoreID];
 
         // Get current inventory status
         int realInventory = 0;
