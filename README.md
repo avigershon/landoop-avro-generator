@@ -9,7 +9,6 @@
 
 The following topics are populated
 
-<<<<<<< HEAD
 Kafka Topic               | Avro messages
 ------------------------- | ------------------------------------------------------------------------------
 generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
