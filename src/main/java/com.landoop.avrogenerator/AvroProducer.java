@@ -97,7 +97,7 @@ class AvroProducer {
         GenericRecord shipmentRecord = new GenericData.Record(shipmentMessage.getSchema());
         shipmentRecord.put("itemID", itemID);
         shipmentRecord.put("storeCode", store);
-        shipmentRecord.put("count", 100L);
+        shipmentRecord.put("count", 100);
         producer.send(new ProducerRecord<Object, Object>(topicShipments, 0, shipmentRecord));
 
         // Update internal inventory

@@ -7,7 +7,7 @@ public class AvroEcommerce {
           "`fields`:[" +
           "{`name`:`itemID`,`type`:`long`,`doc`:`unique item ID`}," +
           "{`name`:`storeCode`,`type`:`string`,`doc`:`store code `}," +
-          "{`name`:`count`,`type`:`long`,`doc`:`number of products shipped to store`}" +
+          "{`name`:`count`,`type`:`int`,`doc`:`number of products shipped to store`}" +
           "]}";
 
   static final String SALES_SCHEMA = "{`type`:`record`,`name`:`com.acme.Sales_v1`," +
@@ -15,7 +15,7 @@ public class AvroEcommerce {
           "`fields`:[" +
           "{`name`:`itemID`,`type`:`long`,`doc`:`unique item ID`}," +
           "{`name`:`storeCode`,`type`:`string`,`doc`:`store code `}," +
-          "{`name`:`count`,`type`:`long`,`doc`:`number of products shipped to store`}" +
+          "{`name`:`count`,`type`:`int`,`doc`:`number of products shipped to store`}" +
           "]}";
 
   static final String SALES_SCHEMA2 = "{`type`:`record`,`name`:`com.acme.Sales_v2`," +
@@ -23,7 +23,7 @@ public class AvroEcommerce {
           "`fields`:[" +
           "{`name`:`itemID`,`type`:`long`,`doc`:`unique item ID`}," +
           "{`name`:`storeCode`,`type`:`string`,`doc`:`store code`}," +
-          "{`name`:`count`,`type`:`long`,`doc`:`number of products shipped to store`}," +
+          "{`name`:`count`,`type`:`int`,`doc`:`number of products shipped to store`}," +
           "{`name`:`customerID`,`type`:`string`,`doc`:`customer ID if known, empty otherwise`}" +
           "]}";
 
