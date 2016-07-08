@@ -3,20 +3,20 @@
 
 > Synthetic avro message generator
 
-* Creates new topic with particular number of `partitions` and `replication`
-* Registers Avro schema into the `schema-registry`
+* Creates new Kafka topics with particular number of `partitions` and `replication`
+* Registers Avro schemas into the `schema-registry`
 * Generates sets of i.e. 1 Million Avro messages of particular specifications
 
-The topics generated and populated with messages are:
+The following topics are populated
 
 Topic  | Messages
-------------- | -------------
-generator-text        | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
-generator-types  | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
-generator-types-upsert   | Same as above, but 1% of the messages contain the **same** value in field `text`. This is used to test connectors that support the `UPSERT` mode
-generator-sql        |  Contains reserved `SQL` words as fields and also in contents
-generator-evolution-widen     | Testing `Avro Evolution` type widenning ²
-generator-evolution-add       | Testing `Avro Evolution` adding new fields with default value ³
+:------------------------ | :-------------
+generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
+generator-types           | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
+generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`. This is used to test connectors that support the `UPSERT` mode
+generator-sql             |  Contains reserved `SQL` words as fields and also in contents
+generator-evolution-widen | Testing `Avro Evolution` type widenning ²
+generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ³
 
 ¹ (2 sets) First set 50 chars - second set 100 chars
 
