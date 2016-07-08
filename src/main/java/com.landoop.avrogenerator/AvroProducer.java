@@ -73,7 +73,7 @@ class AvroProducer {
       for (int i = 0; i < num; i++) {
 
         // Figure out a product and store
-        int itemID = random.nextInt(totalItems);
+        long itemID = Long.valueOf(random.nextInt(totalItems));
         int tradomStoreID = random.nextInt(AvroEcommerce.storeCodes.length - 1);
         String store = AvroEcommerce.storeCodes[tradomStoreID];
 
