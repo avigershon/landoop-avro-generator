@@ -16,6 +16,7 @@
 package com.landoop.avrogenerator;
 
 import kafka.admin.AdminUtils;
+import kafka.common.TopicExistsException;
 import kafka.utils.ZKStringSerializer$;
 import kafka.utils.ZkUtils;
 import org.I0Itec.zkclient.ZkClient;
@@ -47,6 +48,9 @@ class KafkaTools {
       ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeepers), isSecureKafkaCluster);
       Properties topicConfiguration = new Properties();
       AdminUtils.createTopic(zkUtils, topicName, noOfPartitions, noOfReplication, topicConfiguration);
+    } catch (TopicExistsException tex) {
+      // TODO - Display current topic metadata ( partitions, replication )
+      log.info("Topic already exists");
     } catch (Exception ex) {
       ex.printStackTrace();
     } finally {
