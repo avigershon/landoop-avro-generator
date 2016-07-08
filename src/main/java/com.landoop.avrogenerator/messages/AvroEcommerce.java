@@ -11,7 +11,7 @@ public class AvroEcommerce {
           "]}";
 
   static final String SALES_SCHEMA = "{`type`:`record`,`name`:`com.acme.Sales_v1`," +
-          "`doc`:`Events of shipments of products to stores`," +
+          "`doc`:`Events of item sales`," +
           "`fields`:[" +
           "{`name`:`itemID`,`type`:`long`,`doc`:`unique item ID`}," +
           "{`name`:`storeCode`,`type`:`string`,`doc`:`store code `}," +
@@ -19,7 +19,7 @@ public class AvroEcommerce {
           "]}";
 
   static final String SALES_SCHEMA2 = "{`type`:`record`,`name`:`com.acme.Sales_v2`," +
-          "`doc`:`Events of shipments of products to stores`," +
+          "`doc`:`Events of item sales with customerID`," +
           "`fields`:[" +
           "{`name`:`itemID`,`type`:`long`,`doc`:`unique item ID`}," +
           "{`name`:`storeCode`,`type`:`string`,`doc`:`store code`}," +

@@ -15,12 +15,12 @@
  */
 package com.landoop.avrogenerator.messages;
 
-public class AvroEvolutionWiden {
+class AvroEvolutionWiden {
 
   static String EVOLUTION_WIDEN_INITIAL_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionWiden_v1`," +
           "`doc`:`Avro schema that demonstrates Avro type widening evolution capabilities`," +
           "`fields`:[" +
-          "{`name`:`name`,`type`:`string`}," +
+          "{`name`:`text`,`type`:`string`}," +
           "{`name`:`number1`,`type`:`long`}," +
           "{`name`:`number2`,`type`:`float`, `doc`:`this field will become a double`}" + // -> to double
           "]}";
@@ -28,7 +28,7 @@ public class AvroEvolutionWiden {
   static String EVOLUTION_WIDEN_TOLONG_SCHEMA = "{`type`:`record`,`name`:`com.landoop.EvolutionWiden_v2`," +
           "`doc`:`Avro schema that demonstrates Avro type widening evolution capabilities`," +
           "`fields`:[" +
-          "{`name`:`name`,`type`:`string`}," +
+          "{`name`:`text`,`type`:`string`}," +
           "{`name`:`number1`,`type`:`long`}," +
           "{`name`:`number2`,`type`:`double`,`doc`:`this field was a float once`}" +
           "]}";

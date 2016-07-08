@@ -48,9 +48,8 @@ public class Run {
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
     runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
 
-    // Avro - Ecommerce scenario
-    runScenario(brokers, zookeepers, schemaregistry, "generator-shipments", Generator.ECOMMERCE_SHIPMENTS);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-sales", Generator.ECOMMERCE_SALES);
+    // Avro - E-commerce scenario
+    runEcommerce(brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES);
   }
 
   public static void main(String[] args) throws IOException {
@@ -87,6 +86,14 @@ public class Run {
     AvroProducer avroGenerator = new AvroProducer(brokers, schemaregistry);
     KafkaTools.createTopic(zookeepers, topicName, partitions, 1);
     avroGenerator.sendMessages(messages, topicName, avromessageType);
+  }
+
+  private void runEcommerce(String brokers, String zookeepers, String schemaregistry, String topicShipments, String topicSales,
+                            Generator shipmentMessage, Generator salesMessage) {
+    AvroProducer avroGenerator = new AvroProducer(brokers, schemaregistry);
+    KafkaTools.createTopic(zookeepers, topicShipments, partitions, 1);
+    KafkaTools.createTopic(zookeepers, topicSales, partitions, 1);
+    avroGenerator.sendEcommerceMessages(messages, topicShipments, topicSales, shipmentMessage, salesMessage);
   }
 
 }

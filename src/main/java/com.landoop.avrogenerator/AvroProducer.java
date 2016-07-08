@@ -113,12 +113,12 @@ class AvroProducer {
           } else if (currentInventory >= 4 && currentInventory <= 10) {
             numberSales = 1;
           } else {
-            numberSales= random.nextInt(10) * currentInventory;
+            numberSales = random.nextInt(10) * currentInventory;
           }
 
           realInventory = realInventory - numberSales;
 
-          if(numberSales>0) {
+          if (numberSales > 0) {
             // Create a sales
             GenericRecord salesRecord = new GenericData.Record(shipmentMessage.getSchema());
             salesRecord.put("itemID", itemID);
@@ -141,7 +141,7 @@ class AvroProducer {
       long durationMsec = (endTime - startTime) / 1000000;
       log.info("Total time " + (durationMsec / 1000.0) + " sec ");
       log.info("Shipment message rate : " + (int) (num / (durationMsec / 1000.0)) + " msg / sec");
-      log.info("Shipment message rate : " + (int) (num*5 / (durationMsec / 1000.0)) + " msg / sec");
+      log.info("Shipment message rate : " + (int) (num * 5 / (durationMsec / 1000.0)) + " msg / sec");
     } catch (Throwable throwable) {
       throwable.printStackTrace();
     }
@@ -192,36 +192,34 @@ class AvroProducer {
           String[] reservedList = {"SELECT * FROM TABLE1", "CREATE AS SELECT FROM", "DROP TABLE TABLE1"};
           avroRecord.put("as", reservedList[random.nextInt(reservedList.length)]);
           avroRecord.put("from", 10);
-        }
-        /*
-        else if (message == BasicAvro.EVOLUTION) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
+        } else if (message == Generator.EVOLUTION_WIDEN_INITIAL) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("number1", 1000L);
           avroRecord.put("number2", (float) 1000.0);
-        } else if (message == BasicAvro.EVOLUTION_ADD_TEXT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 1000);
-          avroRecord.put("number2", (float) 1000.0);
-          avroRecord.put("text", "payload");
-        } else if (message == AllAvroMessages.EVOLUTION_WIDEN_FLOAT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 100000000000L);
+        } else if (message == Generator.EVOLUTION_WIDEN_TOLONG) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("number1", 1000L);
           avroRecord.put("number2", 100000000000.000000000001D);
-        } else if (message == AllAvroMessages.EVOLUTION_ADD_TEXT) {
-          avroRecord.put("name", randomString(50));
-          avroRecord.put("number1", 100000000000L);
-          avroRecord.put("number2", 100000000000.000000000001D);
-          avroRecord.put("text", "payload");
+        } else if (message == Generator.EVOLUTION_INITIAL) {
+          avroRecord.put("text", randomString(50));
+        } else if (message == Generator.EVOLUTION_ADD1) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+        } else if (message == Generator.EVOLUTION_ADD2) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+          avroRecord.put("number1", 100);
+        } else if (message == Generator.EVOLUTION_ADD3) {
+          avroRecord.put("text", randomString(50));
+          avroRecord.put("flag", true);
+          avroRecord.put("number1", 100);
+          avroRecord.put("number2", (float) 100.001);
         }
-        */
 
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");
 
         producer.send(new ProducerRecord<Object, Object>(topic, 0, avroRecord));
-
-        //byte[] recordInBytes = recordInjection.apply(avroRecord);
-        //producer.send(new ProducerRecord<String, byte[]>(topic, recordInBytes));
       }
       System.out.println();
       long endTime = System.nanoTime();
