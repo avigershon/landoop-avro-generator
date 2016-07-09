@@ -13,8 +13,8 @@ The following topics are populated
 Kafka Topic               | Avro messages
 ------------------------- | ------------------------------------------------------------------------------
 generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
-generator-types           | Avro messages with most common Avro types : `string`, `boolean`, `int`, `long`, `float`, `double`
-generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`. This is used to test connectors that support the `UPSERT` mode
+generator-types           | Avro messages with basic Avro types `string`, `boolean`, `int`, `long`, `float`, `double`
+generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`
 generator-sql             | Contains reserved `SQL` words as fields and also in contents
 generator-evolution-widen | Testing `Avro Evolution` type widenning ²
 generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ³
