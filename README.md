@@ -5,27 +5,25 @@
 > Synthetic avro message generator
 
 * Creates new Kafka topics with particular number of `partitions` and `replication`
-* Registers Avro schemas into the `schema-registry`
+* Registers Avro schemas into the [schema-registry](https://schema-registry-ui.landoop.com)
 * Generates sets of i.e. 1 Million Avro messages of particular specifications
 
 The following topics are populated
 
-Kafka Topic               | Avro messages
-------------------------- | ------------------------------------------------------------------------------
-generator-text            | Avro messages with single field `text` with characters 50 chars to 100 chars ¹
-generator-types           | Avro messages with basic Avro types `string`, `boolean`, `int`, `long`, `float`, `double`
-generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`
-generator-sql             | Contains reserved `SQL` words as fields and also in contents
-generator-evolution-widen | Testing `Avro Evolution` type widenning ²
-generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ³
-generator-shipments       | Item shipments to stores for e-commerce use-case
-generator-sales           | Item sales for e-commerce use-case
+Kafka Topic               | Avro messages                                                                         | Versions
+------------------------- | ------------------------------------------------------------------------------------- | --------
+generator-text            | Avro messages with single field `text` with 50 to 100 chars payload                   |    1
+generator-types           | Avro messages with basic Avro types `string`,`boolean`,`int`,`long`,`float`,`double`  |    1
+generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`      |    1
+generator-sql             | Contains reserved `SQL` words as fields and also in contents                          |    1
+generator-shipments       | Item shipments to stores for e-commerce use-case                                      |    1
+generator-sales           | Item sales for e-commerce use-case                                                    |    1
+generator-evolution-widen | Testing `Avro Evolution` type widenning ¹                                             |    2
+generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ²                       |    4
 
-¹ (2 sets) First set 50 chars - second set 100 chars
 
-² (2 sets) First set has a `float` then we widen to `double` and generate both old and new data
-
-³  (4 sets) First set `text` then add a new `boolean` field, then a third `int` and a fourth `float`
+¹ `float` is widenned to `double` both *old* and *new* records are generated
+² Keeps adding new fields
 
 # Building
 
