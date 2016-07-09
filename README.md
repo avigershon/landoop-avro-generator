@@ -13,16 +13,16 @@ The following topics are populated
 Kafka Topic               | Avro messages                                                                         | Versions
 ------------------------- | ------------------------------------------------------------------------------------- | --------
 generator-text            | Avro messages with single field `text` with 50 to 100 chars payload                   |    1
-generator-types           | Avro messages with basic Avro types `string`,`boolean`,`int`,`long`,`float`,`double`  |    1
-generator-types-upsert    | Same as above, but 1% of the messages contain the **same** value in field `text`      |    1
+generator-types           | Avro messages with basic types `string`,`boolean`,`int`,`long`,`float`,`double`       |    1
+generator-types-upsert    | As above, but 1% of the messages contain the **same** value in field `text`           |    1
 generator-sql             | Contains reserved `SQL` words as fields and also in contents                          |    1
 generator-shipments       | Item shipments to stores for e-commerce use-case                                      |    1
 generator-sales           | Item sales for e-commerce use-case                                                    |    1
 generator-evolution-widen | Testing `Avro Evolution` type widenning ¹                                             |    2
 generator-evolution-add   | Testing `Avro Evolution` adding new fields with default value ²                       |    4
 
-
 ¹ `float` is widenned to `double` both *old* and *new* records are generated
+
 ² Keeps adding new fields
 
 # Building
@@ -48,6 +48,8 @@ And then execute - by passing in **number of messages per set** and **partitions
     kafka-topics --delete --zookeeper $ZK --topic generator-types
     kafka-topics --delete --zookeeper $ZK --topic generator-types-upsert
     kafka-topics --delete --zookeeper $ZK --topic generator-sql
+    kafka-topics --delete --zookeeper $ZK --topic generator-shipments
+    kafka-topics --delete --zookeeper $ZK --topic generator-sales
     kafka-topics --delete --zookeeper $ZK --topic generator-evolution-widen
     kafka-topics --delete --zookeeper $ZK --topic generator-evolution-add
     sleep 2
