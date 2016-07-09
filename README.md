@@ -11,9 +11,9 @@
 The following topics are populated
 
 Kafka Topic               | Avro messages                                                                         | Versions
-------------------------- | ------------------------------------------------------------------------------------- | --------
-generator-text            | Avro messages with single field `text` with 50 to 100 chars payload                   |    1
-generator-types           | Avro messages with basic types `string`,`boolean`,`int`,`long`,`float`,`double`       |    1
+------------------------- | ------------------------------------------------------------------------------------- | :------:
+generator-text            | Single field `text` with 50 to 100 chars payload                                      |    1
+generator-types           | Basic Avro types `string`, `boolean`, `int`, `long`, `float`, `double`                |    1
 generator-types-upsert    | As above, but 1% of the messages contain the **same** value in field `text`           |    1
 generator-sql             | Contains reserved `SQL` words as fields and also in contents                          |    1
 generator-shipments       | Item shipments to stores for e-commerce use-case                                      |    1
