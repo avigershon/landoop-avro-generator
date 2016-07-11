@@ -141,7 +141,7 @@ class AvroProducer {
           long totalMillis = (System.nanoTime() - startTime) / 1000000; // 1000 ms
 
           // total messages / total seconds < throttle
-          if (i / (totalMillis / 1000) > throttle) {  // 20K / 1 >
+          if (i / ((totalMillis / 1000) + 1) > throttle) {  // 20K / 1 >
             log.debug("Sleeping 1ms for throttling as throttle=[" + throttle + "] and we are sending" + (int) (num / (totalMillis / 1000.0)) + " msg / sec");
             Thread.sleep(1);
           }
