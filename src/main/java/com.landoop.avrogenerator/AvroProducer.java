@@ -138,9 +138,16 @@ class AvroProducer {
         }
 
         if (throttle > 0 && i % throttle == 0) {
+          long totalMillis = (System.nanoTime() - startTime) / 1000000; // 1000 ms
+
+          // total messages / total seconds < throttle
+          if (i / (totalMillis / 1000) > throttle) {  // 20K / 1 >
+            log.debug("Sleeping 1ms for throttling as throttle=[" + throttle + "] and we are sending" + (int) (num / (totalMillis / 1000.0)) + " msg / sec");
+            Thread.sleep(1);
+          }
+          long a = i / (System.nanoTime() - startTime) / 1000000000;
+
           long durationMsec = 1000 - (System.nanoTime() - startTime) / 1000000;
-          log.debug("Sleeping " + durationMsec + " msec due to <throttle> " + throttle);
-          Thread.sleep(durationMsec);
         }
 
       }
