@@ -27,29 +27,33 @@ public class Run {
 
   private int messages, partitions;
 
-  private Run(int messages, int partitions, String brokers, String zookeepers, String schemaregistry) {
+  private Run(int messages, int partitions, String brokers, String zookeepers, String schemaregistry, String filter) {
     this.messages = messages;
     this.partitions = partitions;
 
     // Avro - Basics
-    runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT50);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT100);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-types", Generator.AVRO_TYPES);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-types-upsert", Generator.AVRO_TYPES_UPSERT);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-sql", Generator.SQL_RESERVED_WORDS);
+    if (filter.equals("") || filter.contains("simple")) {
+      runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT50);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-text", Generator.TEXT100);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-types", Generator.AVRO_TYPES);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-types-upsert", Generator.AVRO_TYPES_UPSERT);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-sql", Generator.SQL_RESERVED_WORDS);
+    }
+    if (filter.equals("") || filter.contains("evolution")) {
+      // Avro - Evolution widening types
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_INITIAL);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_TOLONG);
 
-    // Avro - Evolution widening types
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_INITIAL);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-widen", Generator.EVOLUTION_WIDEN_TOLONG);
-
-    // Avro - Evolution adding new fields
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_INITIAL);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD1);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
-    runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
-
-    // Avro - E-commerce scenario
-    runEcommerce(brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES);
+      // Avro - Evolution adding new fields
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_INITIAL);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD1);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD2);
+      runScenario(brokers, zookeepers, schemaregistry, "generator-evolution-add", Generator.EVOLUTION_ADD3);
+    }
+    if (filter.equals("") || filter.contains("ecommerce")) {
+      // Avro - E-commerce scenario
+      runEcommerce(brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES);
+    }
   }
 
   public static void main(String[] args) throws IOException {
@@ -58,6 +62,7 @@ public class Run {
 
     int messages = Integer.parseInt(args[0]);
     int partitions = Integer.parseInt(args[1]);
+    String filter = args[2];
 
     String brokers = System.getenv("BROKERS");
     String zookeepers = System.getenv("ZK");
@@ -78,7 +83,7 @@ public class Run {
             "generator-shipments " +
             "generator-sales]");
 
-    new Run(messages, partitions, brokers, zookeepers, schemaregistry);
+    new Run(messages, partitions, brokers, zookeepers, schemaregistry, filter);
   }
 
   private void runScenario(String brokers, String zookeepers, String schemaregistry, String topicName, Generator avromessageType) {

@@ -133,8 +133,9 @@ class AvroProducer {
         }
 
         // Log out every 10K messages
-        if (i % 10000 == 0)
+        if (i % 10000 == 0) {
           System.out.print(" . " + (i / 1000) + "K");
+        }
 
       }
       System.out.println();
@@ -142,7 +143,7 @@ class AvroProducer {
       long durationMsec = (endTime - startTime) / 1000000;
       log.info("Total time " + (durationMsec / 1000.0) + " sec ");
       log.info("Shipment message rate : " + (int) (num / (durationMsec / 1000.0)) + " msg / sec");
-      log.info("Shipment message rate : " + (int) (num * 5 / (durationMsec / 1000.0)) + " msg / sec");
+      log.info("Sales message rate : " + (int) (num * 5 / (durationMsec / 1000.0)) + " msg / sec");
     } catch (Throwable throwable) {
       throwable.printStackTrace();
     }
