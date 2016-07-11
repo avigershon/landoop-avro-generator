@@ -62,7 +62,7 @@ class AvroProducer {
    * <p>
    * It uses 715 stores x 100 products - and keeps an internalInventory for the shake of generating realistic data
    */
-  void sendEcommerceMessages(int num, String topicShipments, String topicSales, Generator shipmentMessage, Generator salesMessage) {
+  void sendEcommerceMessages(int num, int throttle, String topicShipments, String topicSales, Generator shipmentMessage, Generator salesMessage) {
 
     int totalItems = 100; // 715 * 100
     Map<String, Integer> internalInventory = new HashMap<>(); // key: storeCode-itemID value: count
@@ -137,6 +137,12 @@ class AvroProducer {
           System.out.print(" . " + (i / 1000) + "K");
         }
 
+        if (throttle > 0 && i % throttle == 0) {
+          long durationMsec = 1000 - (System.nanoTime() - startTime) / 1000000;
+          log.debug("Sleeping " + durationMsec + " msec due to <throttle> " + throttle);
+          Thread.sleep(durationMsec);
+        }
+
       }
       System.out.println();
       long endTime = System.nanoTime();
@@ -154,7 +160,7 @@ class AvroProducer {
    * Sends X number of messages to a topic - with a particular message format
    */
 
-  void sendMessages(int num, String topic, Generator message) {
+  void sendMessages(int num, String topic, Generator message, int throttle) {
 
     try (Producer<Object, Object> producer = getAvroProducer(brokers, schemaregistry)) {
       log.info("Sending " + num / 1000 + "K messages to topic [" + topic + "]");
@@ -220,6 +226,12 @@ class AvroProducer {
 
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");
+
+        if (throttle > 0 && i % throttle == 0) {
+          long durationMsec = 1000 - (System.nanoTime() - startTime) / 1000000;
+          log.debug("Sleeping " + durationMsec + " msec due to <throttle> " + throttle);
+          Thread.sleep(durationMsec);
+        }
 
         producer.send(new ProducerRecord<Object, Object>(topic, 0, avroRecord));
       }
