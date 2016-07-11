@@ -121,10 +121,12 @@ class AvroProducer {
 
           if (numberSales > 0) {
             // Create a sales
-            GenericRecord salesRecord = new GenericData.Record(shipmentMessage.getSchema());
+            GenericRecord salesRecord = new GenericData.Record(salesMessage.getSchema());
             salesRecord.put("itemID", itemID);
             salesRecord.put("storeCode", store);
             salesRecord.put("count", numberSales);
+            salesRecord.put("customerID", "-");
+
             producer.send(new ProducerRecord<Object, Object>(topicSales, 0, salesRecord));
 
             // Update internal inventory
