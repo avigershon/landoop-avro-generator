@@ -57,7 +57,7 @@ public class Run {
   }
 
   public static void main(String[] args) throws IOException {
-    if (args.length != 2)
+    if (args.length < 2)
       throw new IllegalArgumentException("Requires 2 arguments <number of messages> and <partitions>");
 
     int messages = Integer.parseInt(args[0]);
