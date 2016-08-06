@@ -50,7 +50,7 @@ public enum Generator {
    **      Ecommerce Avro : Example for 'inventory-in-hand' scenario        **
    ***************************************************************************/
   ECOMMERCE_SHIPMENTS(getSchema(AvroEcommerce.SHIPMENT_SCHEMA)),
-  ECOMMERCE_SALES(getSchema(AvroEcommerce.SALES_SCHEMA2));
+  ECOMMERCE_SALES(getSchema(AvroEcommerce.SALES_SCHEMA));
 
 
   private final Schema schema;

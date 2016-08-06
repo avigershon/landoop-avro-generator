@@ -73,7 +73,7 @@ class AvroProducer {
       for (int i = 0; i < num; i++) {
 
         // Figure out a product and store
-        long itemID = Long.valueOf(random.nextInt(totalItems));
+        long itemID = random.nextInt(totalItems);
         int tradomStoreID = random.nextInt(AvroEcommerce.storeCodes.length - 1);
         String store = AvroEcommerce.storeCodes[tradomStoreID];
 
@@ -84,7 +84,7 @@ class AvroProducer {
         }
 
         // Figure out how many to ship
-        int shippedItems = 0;
+        int shippedItems;
         if (realInventory <= 10) {
           shippedItems = 100;
         } else {
@@ -120,7 +120,7 @@ class AvroProducer {
           realInventory = realInventory - numberSales;
 
           if (numberSales > 0) {
-            // Create a sales
+            // Create sales Avro records
             GenericRecord salesRecord = new GenericData.Record(salesMessage.getSchema());
             salesRecord.put("itemID", itemID);
             salesRecord.put("storeCode", store);

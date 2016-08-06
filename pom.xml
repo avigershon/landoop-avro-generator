@@ -172,6 +172,20 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>tree</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>tree</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
