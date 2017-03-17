@@ -69,19 +69,19 @@ public class Run {
   }
 
   public static void main(String[] args) throws IOException {
-    if (args.length < 3)
+    if (args.length < 2)
       throw new IllegalArgumentException("Requires 2 arguments <number of messages> and <partitions> and <throttle>");
 
     int messages = Integer.parseInt(args[0]);
     int partitions = Integer.parseInt(args[1]);
     int throttle = 0;
-    if ((args[2] + "").equals("")) {
+    if ((args.length == 2) || (args[2] + "").equals("")) {
       log.info("No <throttle> parameter used - so we will be going at our faster rate (!) Watch out ! Expect 1M messages/");
     } else {
       throttle = Integer.parseInt(args[2]);
       log.info("Throttling avro message generator to " + throttle + " messages / sec");
     }
-    String filter = args[3];
+    String filter = ""; //args[3];
 
     String brokers = System.getenv("BROKERS");
     String zookeepers = System.getenv("ZK");

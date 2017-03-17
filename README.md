@@ -33,9 +33,9 @@ generator-evolution-add   | Testing `Avro Evolution` adding new fields with defa
 
 Export 3 system variables
 
-     export BROKERS="broker-hostname:9092"
-     export ZK="zookeeper-hostname:2181"
-     export SCHEMA_REGISTRY="http://schema-registry-hostname:8081"
+     export BROKERS="192.168.99.100:9092"
+     export ZK="192.168.99.100:2181"
+     export SCHEMA_REGISTRY="http://192.168.99.100:8081"
 
 And then execute - by passing in **number of messages per set** and **partitions**
 

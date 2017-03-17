@@ -53,6 +53,7 @@ class AvroProducer {
     producerProps.put("acks", "all");
     producerProps.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
     producerProps.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+    producerProps.put("linger.ms","10"); // ?
     producerProps.put("schema.registry.url", schemaregistry);
     return new KafkaProducer<>(producerProps);
   }
