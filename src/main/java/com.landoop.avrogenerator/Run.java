@@ -64,7 +64,7 @@ public class Run {
               "generator-shipments " +
               "generator-sales]");
       // Avro - E-commerce scenario
-      runEcommerce(messages, partitions, throttle, brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES);
+      runEcommerce(messages, partitions, throttle, brokers, zookeepers, schemaregistry, "generator-shipments", "generator-sales", Generator.ECOMMERCE_SHIPMENTS, Generator.ECOMMERCE_SALES2);
     }
   }
 
