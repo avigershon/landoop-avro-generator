@@ -95,7 +95,9 @@ public class Run {
 
     log.info("Running <landoop-avro-generator> generating " + messages + " messages on " + partitions + " partitions");
 
-    new Run(messages, partitions, throttle, filter, brokers, zookeepers, schemaregistry);
+    while(true) {
+      new Run(messages, partitions, throttle, filter, brokers, zookeepers, schemaregistry);
+    }
   }
 
   private void runScenario(Integer messages, Integer partitions, Integer throttle, String brokers, String zookeepers, String schemaregistry, String topicName, Generator avromessageType) {
