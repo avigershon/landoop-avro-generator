@@ -74,7 +74,7 @@ public class Run {
 
     int messages = Integer.parseInt(args[0]);
     int partitions = Integer.parseInt(args[1]);
-    int throttle = 0;
+    int throttle = Integer.MAX_VALUE;
     if ((args.length == 2) || (args[2] + "").equals("")) {
       log.info("No <throttle> parameter used - so we will be going at our faster rate (!) Watch out ! Expect 1M messages/");
     } else {

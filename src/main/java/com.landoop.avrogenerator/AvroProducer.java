@@ -53,7 +53,7 @@ class AvroProducer {
     producerProps.put("acks", "all");
     producerProps.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
     producerProps.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
-    producerProps.put("linger.ms","10"); // ?
+    producerProps.put("linger.ms", "10"); // ?
     producerProps.put("schema.registry.url", schemaregistry);
     return new KafkaProducer<>(producerProps);
   }
@@ -206,11 +206,16 @@ class AvroProducer {
           String[] reservedList = {"SELECT * FROM TABLE1", "CREATE AS SELECT FROM", "DROP TABLE TABLE1"};
           avroRecord.put("as", reservedList[random.nextInt(reservedList.length)]);
           avroRecord.put("from", 10);
-        } else if (message == Generator.EVOLUTION_WIDEN_INITIAL) {
+        }
+        /*
+        else if (message == Generator.EVOLUTION_WIDEN_INITIAL) {
           avroRecord.put("text", randomString(50));
           avroRecord.put("number1", 1000L);
           avroRecord.put("number2", (float) 1000.0);
-        } else if (message == Generator.EVOLUTION_WIDEN_TOLONG) {
+        }
+        */
+        else if (message == Generator.EVOLUTION_WIDEN_TOLONG) {
+        /*
           avroRecord.put("text", randomString(50));
           avroRecord.put("number1", 1000L);
           avroRecord.put("number2", 100000000000.000000000001D);
@@ -224,6 +229,7 @@ class AvroProducer {
           avroRecord.put("flag", true);
           avroRecord.put("number1", 100);
         } else if (message == Generator.EVOLUTION_ADD3) {
+        */
           avroRecord.put("text", randomString(50));
           avroRecord.put("flag", true);
           avroRecord.put("number1", 100);
@@ -233,7 +239,7 @@ class AvroProducer {
         if (i % 10000 == 0)
           System.out.print(" . " + (i / 1000) + "K");
 
-        if (throttle > 0 && i % throttle == 0) {
+        if (i % throttle >= (i - 1) % throttle) {
           long durationMsec = 1000 - (System.nanoTime() - startTime) / 1000000;
           log.debug("Sleeping " + durationMsec + " msec due to <throttle> " + throttle);
           Thread.sleep(durationMsec);
