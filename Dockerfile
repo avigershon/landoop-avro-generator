@@ -8,4 +8,4 @@ WORKDIR /avro-generator
 VOLUME /avro-generator
 RUN mvn clean install
 
-CMD ["sh","-","c","./target/landoop-avro-generator", "1000000", "10"]
+CMD ["sh","-c","./target/landoop-avro-generator", "1000000", "10"]
