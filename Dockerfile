@@ -6,7 +6,4 @@ RUN mkdir /avro-generator
 COPY . /avro-generator
 WORKDIR /avro-generator
 VOLUME /avro-generator
-RUN mvn clean install
-
-#CMD ["sh","-c","./target/landoop-avro-generator", "1000000", "10"]
-CMD ["sh","-c","ls","-ll"]
+RUN sudo mvn clean install
